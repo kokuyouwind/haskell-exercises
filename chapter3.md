@@ -12,28 +12,28 @@
 となる。
 
 問. トリボナッチ数列のn番目の数を計算する関数を、以下の名前と方法で定義せよ。
-  1. `tori_pattern` : パターンマッチを用いる
-  2. `tori_guard` : ガードを用いる
-  3. `tori_case` : case式を用いる。
+  1. `tri_pattern` : パターンマッチを用いる
+  2. `tri_guard` : ガードを用いる
+  3. `tri_case` : case式を用いる。
 
 ただし一番最初の数を0番目とする。  
 また負数を与えた場合の挙動は考慮しなくて良い。
 
 例.
 ```haskell
-*Main> :t tori_pattern
+*Main> :t tri_pattern
 tori_pattern :: Int -> Int
-*Main> take 10 [tori_pattern n | n <- [0..]]
+*Main> take 10 [tri_pattern n | n <- [0..]]
 [0,0,1,1,2,4,7,13,24,44]
 
-*Main> :t tori_guard
+*Main> :t tri_guard
 tori_guard :: Int -> Int
-*Main> take 10 [tori_guard n | n <- [0..]]
+*Main> take 10 [tri_guard n | n <- [0..]]
 [0,0,1,1,2,4,7,13,24,44]
 
-*Main> :t tori_case
+*Main> :t tri_case
 tori_case :: Int -> Int
-*Main> take 10 [tori_case n | n <- [0..]]
+*Main> take 10 [tri_case n | n <- [0..]]
 [0,0,1,1,2,4,7,13,24,44]
 ```
 
