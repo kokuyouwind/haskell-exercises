@@ -131,8 +131,8 @@ pointed5 f xs = foldl (\ys g -> g ys) xs (replicate 3 (\zs -> concat (map f zs))
   1. `church` : 非負整数`n`を受け取り、対応するチャーチ数を返す関数
   2. `unchurch` : チャーチ数`c`を受け取り、対応する非負整数を返す関数
   3. `csucc` : チャーチ数`c`を受け取り、それより1大きいチャーチ数を返す関数
-  4. `cadd` : チャーチ数`c`,`d`を受け取り、`c`と`d`を加算したチャーチ数を返す関数
-  5. `cmul` : チャーチ数`c`,`d`を受け取り、`c`と`d`を乗算したチャーチ数を返す関数
+  4. `cadd` : チャーチ数`c1`、`c2'`を受け取り、`c1`と`c2`を加算したチャーチ数を返す関数
+  5. `cmul` : チャーチ数`c1`、`c2'`を受け取り、`c1`と`c2`を乗算したチャーチ数を返す関数
 
 ### 例
 ```haskell
@@ -142,20 +142,81 @@ pointed5 f xs = foldl (\ys g -> g ys) xs (replicate 3 (\zs -> concat (map f zs))
 5
 *Main> unchurch $ csucc $ church 5
 6
-*Main> unchurch $ cadd (church 3) (church 2)
+*Main> unchurch $ church 3 `cadd` church 2
 5
-*Main> unchurch $ cmul (church 3) (church 2)
+*Main> unchurch $ church 3 `cmul` church 2
 6
 ```
 
 ## 4.2 真理値
 ### 真理値の定義
 
-チャーチ数と同様、論理値も関数を用いて表す事ができる。  
+チャーチ数と同様、真理値も関数を用いて表す事ができる。  
   - `True` : `\t f -> t`
   - `False` : `\t f -> f`
 
-端的に言って、`True`に対応する関数は2つの値を受け取り前者を返す関数、`False`に対応する関数は2つの値を受け取り後者を返す関数である。
+このように関数を用いて真理値を表現したものを**チャーチ真理値**という。  
+端的に言って、`True`に対応するチャーチ真理値は2つの値を受け取り前者を返す関数、`False`に対応するチャーチ真理値は2つの値を受け取り後者を返す関数である。
 
 ### 問
-(以下追記する)
+以下の関数を定義せよ。  
+ただし、3～5については*組み込みの論理演算子を用いず、関数適用のみを用いて定義する*こと。  
+なお、次のようにチャーチ真理値をあらかじめ定義しておくと良い。
+```haskell
+cTrue = \t f -> t
+cFalse = \t f -> f
+```
+
+  1. `churchb` : 真理値`b`を受け取り、対応するチャーチ真理値を返す関数
+  2. `unchurchb` : チャーチ真理値`cb`を受け取り、対応する真理値を返す関数
+  3. `cnot` : チャーチ真理値`cb`を受け取り、その否定を返す関数
+  4. `cand` : チャーチ真理値`cb1`、`cb2`を受け取り、その論理積を返す関数
+  5. `cor` : チャーチ真理値`cb1`、`cb2`を受け取り、その論理和を返す関数
+
+### 例
+```haskell
+*Main> unchurchb $ churchb True
+True
+*Main> unchurchb $ churchb False
+False
+
+*Main> unchurchb $ cnot cTrue
+False
+*Main> unchurchb $ cnot cFalse
+True
+
+*Main> unchurchb $ cand cTrue cTrue
+True
+*Main> unchurchb $ cand cFalse cTrue
+False
+*Main> unchurchb $ cand cTrue cFalse
+False
+*Main> unchurchb $ cand cFalse cFalse
+False
+
+*Main> unchurchb $ cor cTrue cTrue
+True
+*Main> unchurchb $ cor cFalse cTrue
+True
+*Main> unchurchb $ cor cTrue cFalse
+True
+*Main> unchurchb $ cor cFalse cFalse
+False
+```
+
+## 4.3 様々な計算
+### 問
+以下の関数を、*組み込みの演算子や再帰を用いず、関数適用のみを用いて定義*せよ。
+
+  1. `cis0` : チャーチ数`c`を受け取り、それが0に対応するチャーチ数なら`cTrue`を、それ以外なら`cFalse`を返す関数
+  2. (以下記述中) 
+
+### 例
+```haskell
+*Main> unchurchb $ cis0 $ church 0
+False
+*Main> unchurchb $ cis0 $ church 1
+True
+*Main> unchurchb $ cis0 $ church 2
+True
+```
