@@ -107,6 +107,8 @@ pointed5 f xs = foldl (\ys g -> g ys) xs (replicate 3 (\zs -> concat (map f zs))
 
 #4. ラムダ計算
 *難易度の高いトピックである*  
+ラムダ計算は、関数のみを用いる計算モデルである。  
+以下では形式的な定義を扱わず、問題を通して「関数のみで計算が成立する」ことを示す。
 
 ## 4.1 チャーチ数
 ### チャーチ数の定義
@@ -125,7 +127,7 @@ pointed5 f xs = foldl (\ys g -> g ys) xs (replicate 3 (\zs -> concat (map f zs))
 
 ### 問
 以下の関数を定義せよ。  
-ただし、3～5については*組み込みの数値演算子を用いず、関数適用のみを用いて定義する*こと。  
+ただし、3～6については*組み込みの数値演算子を用いず、関数適用のみを用いて定義する*こと。  
 なお非負整数を受け取る関数については、負数を受け取った場合の挙動を考慮しなくて良い。  
 
   1. `church` : 非負整数`n`を受け取り、対応するチャーチ数を返す関数
@@ -133,6 +135,11 @@ pointed5 f xs = foldl (\ys g -> g ys) xs (replicate 3 (\zs -> concat (map f zs))
   3. `csucc` : チャーチ数`c`を受け取り、それより1大きいチャーチ数を返す関数
   4. `cadd` : チャーチ数`c1`、`c2'`を受け取り、`c1`と`c2`を加算したチャーチ数を返す関数
   5. `cmul` : チャーチ数`c1`、`c2'`を受け取り、`c1`と`c2`を乗算したチャーチ数を返す関数
+  6. `cpred` : チャーチ数`c`を受け取り、それより1小さいチャーチ数を返す関数  
+    ただし、0より小さくなる場合には0を返す  
+    ヒント:`\g h -> h (g f)`というラムダ式を用いよ  
+      この式を`F`としたとき、`F(F a)`は`\h -> h (f (a f))`に簡約される  
+      また`F(F(F a))`は`\h -> h (f (f (a f)))`に簡約される  
 
 ### 例
 ```haskell
@@ -146,10 +153,18 @@ pointed5 f xs = foldl (\ys g -> g ys) xs (replicate 3 (\zs -> concat (map f zs))
 5
 *Main> unchurch $ church 3 `cmul` church 2
 6
+*Main> unchurch $ cpred $ church 0
+0
+*Main> unchurch $ cpred $ church 1
+0
+*Main> unchurch $ cpred $ church 2
+1
+*Main> unchurch $ cpred $ church 5
+4
 ```
 
-## 4.2 真理値
-### 真理値の定義
+## 4.2 チャーチ真理値
+### チャーチ真理値の定義
 
 チャーチ数と同様、真理値も関数を用いて表す事ができる。  
   - `True` : `\t f -> t`
@@ -160,10 +175,13 @@ pointed5 f xs = foldl (\ys g -> g ys) xs (replicate 3 (\zs -> concat (map f zs))
 
 ### 問
 以下の関数を定義せよ。  
-ただし、3～5については*組み込みの論理演算子を用いず、関数適用のみを用いて定義する*こと。  
+ただし、3～5については*組み込みの論理演算子やif式などを用いず、関数適用のみを用いて定義する*こと。  
 なお、次のようにチャーチ真理値をあらかじめ定義しておくと良い。
 ```haskell
+cTrue :: t -> t -> t
 cTrue = \t f -> t
+
+cFalse :: t -> t -> t
 cFalse = \t f -> f
 ```
 
@@ -185,38 +203,120 @@ False
 *Main> unchurchb $ cnot cFalse
 True
 
-*Main> unchurchb $ cand cTrue cTrue
+*Main> unchurchb $ cTrue `cand` cTrue
 True
-*Main> unchurchb $ cand cFalse cTrue
+*Main> unchurchb $ cFalse `cand` cTrue
 False
-*Main> unchurchb $ cand cTrue cFalse
+*Main> unchurchb $ cTrue `cand` cFalse
 False
-*Main> unchurchb $ cand cFalse cFalse
+*Main> unchurchb $ cFalse `cand` cFalse
 False
 
-*Main> unchurchb $ cor cTrue cTrue
+*Main> unchurchb $ cTrue `cor` cTrue
 True
-*Main> unchurchb $ cor cFalse cTrue
+*Main> unchurchb $ cFalse `cor` cTrue
 True
-*Main> unchurchb $ cor cTrue cFalse
+*Main> unchurchb $ cTrue `cor` cFalse
 True
-*Main> unchurchb $ cor cFalse cFalse
+*Main> unchurchb $ cFalse `cor` cFalse
 False
 ```
 
-## 4.3 様々な計算
+## 4.3 ラムダ計算と型付け
+### 導入
+以下のような、ブール真理値`cb`を受け取り、それと同じ値を返す関数`cid`を考える。
+```haskell
+cid cb = cb cTrue cFalse
+```
+右辺を見ると、`cb`が`cTrue`の時は第一引数である`cTrue`が返され、`cFalse`の時は第二引数である`cFalse`が返されることが分かる。  
+実際、この関数は以下のとおり想定通りに動作する。
+```haskell
+*Main> unchurchb $ cid cTrue
+True
+*Main> unchurchb $ cid cFalse
+False
+```
+`cid`の型について考えよう。  
+チャーチ真理値の型は`t -> t -> t`であり、`cid`はチャーチ真理値を受け取りチャーチ真理値を返す。  
+よって、`cid`全体の型は`(t -> t -> t) -> (t -> t -> t)`であることが期待されるであろう。  
+しかしながら、この型を指定して`cid`を定義するとコンパイルエラーが起こる。  
+型を指定せずに定義した場合、Haskellは以下のような型を推論する。
+```haskell
+*Main> :t cid
+cid :: ((t1 -> t1 -> t1) -> (t2 -> t2 -> t2) -> t) -> t
+```
+これはどういうことだろうか？  
+ここで、`cid`の式中に表れる`cb`の型を`a -> b -> t`としてみよう。  
+上述の通り、`cTrue`の型は`t1 -> t1 -> t1`、`cFalse`の型は`t2 -> t2 -> t2`として定義されていることを考えると、明らかに`a`は`t1 -> t1 -> t1`、`b`は`t2 -> t2 -> t2`と等しくなければならない。  
+つまり`cb`の型は`(t1 -> t1 -> t1) -> (t2 -> t2 -> t2) -> t`でなければならず、よって`cid`全体の型は`((t1 -> t1 -> t1) -> (t2 -> t2 -> t2) -> t) -> t`となる。  
+
+このように、Haskellの型付けでは関数適用後の値が元の関数と別の型になるため、関数適用を計算の礎とするラムダ計算では型が付けられない場合が存在する。  
+以下の例では`cTrue`に`cid`を1度適用するだけだが、全体として正しく型付けできずコンパイルエラーとなる。
+```haskell
+*Main> unchurchb $ church 1 cid cTrue
+
+<interactive>:19:10:
+    Occurs check: cannot construct the infinite type:
+    (以下省略)
+```
+
+ある程度妥当な型にするため、以下のように`cif`を利用して`cid'`を定義する。
+```haskell
+cif cb t f = if unchurchb cb then t else f
+cid' cb = cif cb cTrue cFalse
+```
+`cid'`の型は以下のようになり、先ほどの例も正しく動作する。
+```haskell
+*Main> :t cid'
+cid' :: (Bool -> Bool -> Bool) -> t -> t -> t
+*Main> unchurchb $ church 1 cid' cTrue
+True
+```
+
+`cif`は型の問題を解決するために存在するだけであり、実質的には`cif cb t f`は`cb t f`と同値であることに注意して欲しい。  
+つまり、`cif`を用いて定義できる様々な関数は、型の問題を除けば`cif`を用いずに記述することが出来る。  
+次の問では、`cif`を利用することで、チャーチ数とチャーチ真理値を組み合わせた様々な関数を定義する。
+
 ### 問
-以下の関数を、*組み込みの演算子や再帰を用いず、関数適用のみを用いて定義*せよ。
+以下の関数を、*組み込みの演算子や再帰、if式などを用いず、関数適用のみを用いて定義*せよ。  
+なお、必要に応じて`cnot`、`cand`、`cor`を、`cnot'`、`cand'`、`cor'`という名前で`cif`を利用して再定義し利用せよ。
 
   1. `cis0` : チャーチ数`c`を受け取り、それが0に対応するチャーチ数なら`cTrue`を、それ以外なら`cFalse`を返す関数
-  2. (以下記述中) 
+  2. `ceven` : チャーチ数`c`を受け取り、それが偶数に対応するチャーチ数なら`cTrue`を、それ以外なら`cFalse`を返す関数
+  3. `cevennot0` : チャーチ数`c`を受け取り、それが0でない偶数に対応するチャーチ数なら`cTrue`を、それ以外なら`cFalse`を返す関数
+  4. `clt2` : チャーチ数`c`を受け取り、それが2以下の数に対応するチャーチ数なら`cTrue`を、それ以外なら`cFalse`を返す関数
 
 ### 例
 ```haskell
 *Main> unchurchb $ cis0 $ church 0
-False
+True
 *Main> unchurchb $ cis0 $ church 1
-True
+False
 *Main> unchurchb $ cis0 $ church 2
+False
+
+*Main> unchurchb $ ceven $ church 10
 True
+*Main> unchurchb $ ceven $ church 7
+False
+
+*Main> unchurchb $ cevennot0 $ church 0
+False
+*Main> unchurchb $ cevennot0 $ church 1
+False
+*Main> unchurchb $ cevennot0 $ church 2
+True
+*Main> unchurchb $ cevennot0 $ church 4
+True
+
+*Main> unchurchb $ clt2 $ church 0
+True
+*Main> unchurchb $ clt2 $ church 1
+True
+*Main> unchurchb $ clt2 $ church 2
+True
+*Main> unchurchb $ clt2 $ church 3
+False
+*Main> unchurchb $ clt2 $ church 4
+False
 ```
