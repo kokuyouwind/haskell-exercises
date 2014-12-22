@@ -119,6 +119,7 @@ pointed5 f xs = foldl (\ys g -> g ys) xs (replicate 3 (\zs -> concat (map f zs))
   - 1 : `\f z -> f z`
   - 2 : `\f z -> f (f z)`
   - 3 : `\f z -> f (f (f z))`
+
 のようになる。  
 ここで、異なる数に対する関数は、明らかに互いに異なる。  
 また、ある数とそれに対応する関数は、相互に変換が可能である。  
