@@ -4,8 +4,6 @@ import Test.QuickCheck
 import qualified Src.Chapter1 as Src
 import qualified Answer.Chapter1 as Ans
 
-type Point = (Int, Int)
-
 prop_manlen (p1, p2) = Src.manlen p1 p2 == Ans.manlen p1 p2
 test_manlen = quickCheck prop_manlen
 
