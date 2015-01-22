@@ -24,17 +24,17 @@
 ### 例
 ```haskell
 *Main> :t tri_pattern
-tori_pattern :: Int -> Int
+tri_pattern :: Int -> Int
 *Main> take 10 [tri_pattern n | n <- [0..]]
 [0,0,1,1,2,4,7,13,24,44]
 
 *Main> :t tri_guard
-tori_guard :: Int -> Int
+tri_guard :: Int -> Int
 *Main> take 10 [tri_guard n | n <- [0..]]
 [0,0,1,1,2,4,7,13,24,44]
 
 *Main> :t tri_case
-tori_case :: Int -> Int
+tri_case :: Int -> Int
 *Main> take 10 [tri_case n | n <- [0..]]
 [0,0,1,1,2,4,7,13,24,44]
 ```
