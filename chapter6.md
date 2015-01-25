@@ -4,7 +4,8 @@
 また、非負整数を受け取る関数については負数を受け取った時の挙動を考慮しなくてよい。
 
   1. `frequencyList` : リスト`xs`を受け取り、`xs`内の要素の出現数で降順ソートしたリストを返す関数
-  2. `initialMap` : 文字列のリスト`ss`を受け取り、その文字から始まる文字列のリストへのMapを返す関数
+  2. `initialMap` : 文字列のリスト`ss`を受け取り、その文字から始まる文字列のリストへのMapを返す関数  
+    ただし、空文字列が含まれる場合はその要素を無視すること
   3. `infixPalindromicNumber` : 非負整数`n`を受け取り、その数を文字列として含む最小の回文数を返す関数  
     なお、回文数とは「逆から数字を読んでも同じ数になる数」のことをいう
 
@@ -19,7 +20,7 @@ sortByFrequency :: Ord a => [a] -> [a]
 
 > :t initialMap
 initialMap :: [String] -> Map.Map Char [String]
-> initialMap ["hoge", "fuga", "hogehoge", "piyo", "fugapiyo"]
+> initialMap ["hoge", "fuga", "hogehoge", "piyo", "", "fugapiyo"]
 fromList [('f',["fugapiyo","fuga"]),('h',["hogehoge","hoge"]),('p',["piyo"])]
 
 > :t infixPalindromicNumber
