@@ -7,12 +7,12 @@ module Src.Chapter1
 
     -- (1)
     manlen :: (Int, Int) -> (Int, Int) -> Int
-    manlen p1 p2 = 0 {- Rewrite HERE! -}
+    manlen p1 p2 = undefined {- Rewrite HERE! -}
 
     -- (2)
     points :: Int -> [(Int, Int)]
-    points n = [] {- Rewrite HERE! -}
+    points n = undefined {- Rewrite HERE! -}
 
     -- (3)
     mancircle :: Int -> [(Int, Int)]
-    mancircle n = [] {- Rewrite HERE! -}
+    mancircle n = undefined {- Rewrite HERE! -}
