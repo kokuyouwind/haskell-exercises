@@ -20,14 +20,46 @@ initialMap :: [String] -> Map.Map Char [String]
 fromList [('f',["fugapiyo","fuga"]),('h',["hogehoge","hoge"]),('p',["piyo"])]
 ```
 
-#2. 
-### 定義
+#2. バーナム暗号
+### バーナム暗号の定義
+ビット毎の排他的論理和は、同じ演算を2回行うと元に戻る性質を持っている。
+```haskell
+x `xor` y `xor` y == x
+```
+これを利用し、暗号と復号に同一の鍵を用いるのが *バーナム暗号* である。
 
+今、暗号化対象となる平文を数列`[1,2,3]`、暗号化鍵を`[2,3,2]`とする。  
+リストの各要素同士の排他的論理和を取ると
+```haskell
+1 `xor` 2 == 3
+2 `xor` 3 == 1
+3 `xor` 2 == 1
+```
+となり、暗号文`[3,1,1]`が得られる。  
+復号の際には、同様に暗号化鍵との排他的論理和を取って
+```haskell
+3 `xor` 2 == 1
+1 `xor` 3 == 2
+1 `xor` 2 == 2
+```
+となり、平文`[1,2,3]`を得る。
 
 ### 問
+暗号鍵となる文字列`k`と、暗号化対象となる平文の文字列`s`を受け取り、暗号文の文字列を返す関数`vernam`を定義せよ。  
+なお、`k`の長さが`s`より短い場合は、`k`を繰り返して使用せよ。
 
+ビットごとの排他的論理和は`Data.Bits`に`xor`として定義されており、これを使って良い。  
+ただし、`Char`は`Bits`のインスタンスではないため、直接`xor`を適用できないことに注意すること。  
+必要ならば`Data.Char`モジュールの関数を使って良い。
 
 ### 例
 ```haskell
-
+> :t vernam
+vernam :: String -> String -> String
+> vernam "\NUL" "hogefuga"
+"hogefuga"
+> vernam "BIGHERO6" "Hello, I am Baymax."
+"\n,+$*~o\DELb(*h\a36[#1i"
+> vernam "BIGHERO6" "\n,+$*~o\DELb(*h\a36[#1i"
+"Hello, I am Baymax."
 ```
