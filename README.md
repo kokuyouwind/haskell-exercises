@@ -14,7 +14,7 @@
 - [第3章 関数の構文](https://github.com/kokuyouwind/haskell-exercises/blob/master/chapter3.md)
 - [第4章 Hello再帰!](https://github.com/kokuyouwind/haskell-exercises/blob/master/chapter4.md)
 - [第5章 高階関数](https://github.com/kokuyouwind/haskell-exercises/blob/master/chapter5.md)
-- 第6章 モジュール
+- [第6章 モジュール](https://github.com/kokuyouwind/haskell-exercises/blob/master/chapter6.md)
 - 第7章 型や型クラスを自分で作ろう
 - 第8章 入出力
 - 第9章 もっと入力、もっと出力
@@ -42,22 +42,22 @@ $ cabal install QuickCheck
 また、特定の関数のみテストする場合には、同様にテストファイルを読み込んだ後、`test_(関数名)`を実行します。  
 例えば、第1章のテストを実行する場合は以下のようになります。
 ```haskell
-Prelude> :l Test/Chapter1.hs
-*Main> test -- 第1章のテストを全て実行
-=== prop_manlen from Test/Chapter1.hs:9 ===
-*** Failed! Falsifiable (after 3 tests and 5 shrinks):
-((0,0),(0,1))
+> :l Test/Chapter1.hs
+> test -- 第1章のテストを全て実行
+=== prop_manlen from Test/Chapter1.hs:7 ===
+*** Failed! Exception: 'Prelude.undefined' (after 1 test):
+((0,0),(0,0))
 
-=== prop_points from Test/Chapter1.hs:12 ===
-*** Failed! Falsifiable (after 1 test):
+=== prop_points from Test/Chapter1.hs:10 ===
+*** Failed! Exception: 'Prelude.undefined' (after 1 test):
 0
 
-=== prop_mancircle from Test/Chapter1.hs:15 ===
-*** Failed! Falsifiable (after 1 test):
+=== prop_mancircle from Test/Chapter1.hs:13 ===
+*** Failed! Exception: 'Prelude.undefined' (after 1 test):
 0
 
 False
-*Main> test_manlen -- manlen関数のテストのみ実行
+> test_manlen -- manlen関数のテストのみ実行
 *** Failed! Falsifiable (after 3 tests and 6 shrinks):
 ((0,0),(1,0))
 ```
@@ -65,15 +65,15 @@ False
 なお`:l Test/Chapter1.hs`を実行した後に`:e Src/ChapterX.hs`で回答を編集した場合、最新の回答でテストが実行されます。  
 このため、問題を解く際には以下のようなワークフローをおすすめします。
 ```haskell
-Prelude> :l Test/Chapter1.hs -- 初めにテストファイルを読み込む
+> :l Test/Chapter1.hs -- 初めにテストファイルを読み込む
 Ok, modules loaded: Src.Chapter1, Answer.Chapter1, Main.
-*Main> test_manlen -- これから実装する関数のテストが失敗することを確認する
-*** Failed! Falsifiable (after 2 tests and 3 shrinks):
-((0,0),(0,1))
-*Main> :e Src/Chapter1.hs -- 問題を解く
-*Main> test_manlen -- 再度テストを実行し、成功するか確認する
+> test_manlen -- これから実装する関数のテストが失敗することを確認する
+*** Failed! Exception: 'Prelude.undefined' (after 1 test):
+((0,0),(0,0))
+> :e Src/Chapter1.hs -- 問題を解く
+> test_manlen -- 再度テストを実行し、成功するか確認する
 +++ OK, passed 100 tests.
 ```
 
-現在、第1章のみテストを用意しています。
+現在、第1,3,6章のみテストを用意しています。
 他の章についても逐次テストを追加していきます。
