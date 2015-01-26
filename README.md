@@ -74,6 +74,3 @@ Ok, modules loaded: Src.Chapter1, Answer.Chapter1, Main.
 > test_manlen -- 再度テストを実行し、成功するか確認する
 +++ OK, passed 100 tests.
 ```
-
-現在、第1,3,6章のみテストを用意しています。
-他の章についても逐次テストを追加していきます。
