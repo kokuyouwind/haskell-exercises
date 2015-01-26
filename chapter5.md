@@ -29,7 +29,7 @@ squares :: Int -> [Int]
 
   1. `fromBinary` : `0`か`1`のみからなるリスト`xs`を受け取り、`xs`を2進数表現と解釈した場合の10進数値を返す関数
   2. `tails` : リスト`xs`を受け取り、`xs`の全ての末尾部分リストを返す関数
-  3. `power_set` : リスト`xs`を受け取り、`xs`のべき集合を返す関数
+  3. `powerSet` : リスト`xs`を受け取り、`xs`のべき集合を返す関数
 
 ### 例
 ```haskell
@@ -43,9 +43,9 @@ tails :: [a] -> [[a]]
 *Main> tails [1,2,3]
 [[1,2,3],[2,3],[3],[]]
 
-*Main> :t power_set
-power_set :: [a] -> [[a]]
-*Main> power_set [1,2,3]
+*Main> :t powerSet
+powerSet :: [a] -> [[a]]
+*Main> powerSet [1,2,3]
 [[1,2,3],[1,2],[1,3],[1],[2,3],[2],[3],[]]
 ```
 
