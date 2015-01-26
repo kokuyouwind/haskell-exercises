@@ -5,7 +5,7 @@ module Answer.Chapter5
     , squares
     , fromBinary
     , tails
-    , power_set
+    , powerSet
     , pointed1
     , pointFree1
     , pointed2
@@ -58,8 +58,8 @@ module Answer.Chapter5
     tails = scanr (:) []
 
     -- (2.3)
-    power_set :: [a] -> [[a]]
-    power_set = foldr (\x acc -> map (x:) acc ++ acc) [[]]
+    powerSet :: [a] -> [[a]]
+    powerSet = foldr (\x acc -> map (x:) acc ++ acc) [[]]
 
     -- (3.1)
     pointed1 :: [Int] -> [Int]

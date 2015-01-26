@@ -1,11 +1,11 @@
-module Answer.Chapter5
+module Src.Chapter5
     (
       applyPair
     , applyN
     , squares
     , fromBinary
     , tails
-    , power_set
+    , powerSet
     , pointed1
     , pointFree1
     , pointed2
@@ -57,8 +57,8 @@ module Answer.Chapter5
     tails xs = undefined {- Rewrite HERE! -}
 
     -- (2.3)
-    power_set :: [a] -> [[a]]
-    power_set xs = undefined {- Rewrite HERE! -}
+    powerSet :: [a] -> [[a]]
+    powerSet xs = undefined {- Rewrite HERE! -}
 
     -- (3.1)
     pointed1 :: [Int] -> [Int]
