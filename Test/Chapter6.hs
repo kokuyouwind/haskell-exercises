@@ -1,19 +1,10 @@
 {-# LANGUAGE TemplateHaskell #-}
 
+import Test.Util
 import Test.QuickCheck
 import Test.QuickCheck.Modifiers
-import Data.Functor
 import qualified Src.Chapter6 as Src
 import qualified Answer.Chapter6 as Ans
-
-genSafeChar :: Gen Char
-genSafeChar = elements ['a'..'z']
-genSafeString :: Gen String
-genSafeString = listOf genSafeChar
-newtype SafeString = SafeString { unwrapSafeString :: String }
-    deriving Show
-instance Arbitrary SafeString where
-    arbitrary = SafeString <$> genSafeString
 
 prop_sortByFrequency (SafeString xs) =  Src.sortByFrequency xs == Ans.sortByFrequency xs
 test_sortByFrequency = quickCheck prop_sortByFrequency
