@@ -47,7 +47,7 @@ module Answer.Chapter5
 
     -- (1.3)
     squares :: Int -> [Int]
-    squares n = takeWhile (< n) $ map (^2) [1..]
+    squares n = takeWhile (<= n) $ map (^2) [1..]
 
     -- (2.1)
     fromBinary :: [Int] -> Int
