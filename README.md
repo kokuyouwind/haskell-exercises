@@ -58,8 +58,7 @@ $ cabal install QuickCheck
 
 False
 > test_manlen -- manlen関数のテストのみ実行
-*** Failed! Falsifiable (after 3 tests and 6 shrinks):
-((0,0),(1,0))
+*** Failed! Exception: 'Prelude.undefined' (after 1 test):
 ```
 
 なお`:l Test/Chapter1.hs`を実行した後に`:e Src/ChapterX.hs`で回答を編集した場合、最新の回答でテストが実行されます。  
