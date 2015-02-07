@@ -1,11 +1,17 @@
 module Test.Util
     (
-      tryEval
+      listeq
+    , tryEval
     , SafeString(..)
     ) where
     import Test.QuickCheck
+    import Data.Function(on)
+    import Data.List(sort)
     import Data.Functor
     import Control.Exception hiding (assert)
+
+    listeq :: Ord a => [a] -> [a] -> Bool
+    listeq = (==) `on` sort
 
     eitherToMaybe :: Either a b -> Maybe b
     eitherToMaybe (Right x) = Just x
