@@ -4,6 +4,7 @@
 また、非負整数を受け取る関数については負数を受け取った時の挙動を考慮しなくてよい。
 
   1. `sortByFrequency` : リスト`xs`を受け取り、`xs`内の要素の出現数で降順ソートしたリストを返す関数
+    なお、出現頻度が同じ要素については、要素自体の昇順となるようにすること
   2. `initialMap` : 文字列のリスト`ss`を受け取り、その文字から始まる文字列のリストへのMapを返す関数  
     ただし、空文字列が含まれる場合はその要素を無視すること
   3. `infixPalindromicNumber` : 非負整数`n`を受け取り、その数を文字列として含む最小の回文数を返す関数  
@@ -15,6 +16,8 @@
 sortByFrequency :: Ord a => [a] -> [a]
 > sortByFrequency "abaacdabddddb"
 "dabc"
+> sortByFrequency "bbaacccc"
+"cab"
 > sortByFrequency ["high", "low", "middle", "high", "high", "middle"]
 ["high","middle","low"]
 
