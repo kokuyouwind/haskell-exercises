@@ -25,10 +25,10 @@ prop_fromBinary (NonNegative n) =  Src.fromBinary bs == Ans.fromBinary bs
     where bs = reverse . unfoldr (\b -> if b == 0 then Nothing else Just (b `mod` 2 , b `div` 2)) $ n
 test_fromBinary = quickCheck prop_fromBinary
 
-prop_tails (SafeString s) =  Src.tails s == Ans.tails s
+prop_tails (SafeString s) =  Src.tails s `listeq` Ans.tails s
 test_tails = quickCheck prop_tails
 
-prop_powerSet (SafeString s) =  Src.powerSet s' == Ans.powerSet s'
+prop_powerSet (SafeString s) =  Src.powerSet s' `listeq` Ans.powerSet s'
     where s' = take 10 s
 test_powerSet = quickCheck prop_powerSet
 
