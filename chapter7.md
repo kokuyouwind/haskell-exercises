@@ -1,27 +1,80 @@
-#1. 基本的なデータ型の利用
+#1. データ型の定義と利用
+## 1.1 3値論理
+### 3値論理の定義
+通常の論理体系では、値は*真*(`True`)と*偽*(`False`)の2値のいずれかであるが、これを3値以上に拡張した論理体系を **多値論理** という。  
+この中でもちょうど3値を用いるものを **3値論理** という。  
+3値論理にはいくつかの定義があるが、以下では[クリーネの強3値論理](http://ja.wikipedia.org/wiki/3%E5%80%A4%E8%AB%96%E7%90%86#.E3.82.AF.E3.83.AA.E3.83.BC.E3.83.8D.E3.81.AE3.E5.80.A4.E8.AB.96.E7.90.86)を扱う。
 
-データ型`Ternary`、`Stack`、`Dfa`を以下のように定義する。
+*真*(`True`)と*偽*(`False`)に加えて、3つめの値として*未定義*(`Undefined`)を考える。  
+*未定義*は*真*か*偽*ではあるが、どちらか分からないような値である。  
+この論理体系の演算では、通常の2値論理での演算を元に、「`Undefined`が`True`と`False`のいずれかを取るかによって結果が変化する場合は`Undefined`、変化しない場合はその値」となるよう定義を拡張する。
 
+例えば、`True or Undefined`の場合、`Undefined`の部分が`True`になっても`False`になっても、式全体の値は`True`になる。  
+このため式全体の値は`True`になる。  
+一方`False or Undefined`の場合、`Undefined`の部分が`True`になるか`False`になるかによって、式全体の値は異なる。  
+このため式全体の値は`Undefined`になる。
+
+演算の真理値表を以下に示す。  
+`not`は論理否定を、`and`は論理積を、`or`は論理和を、それぞれ意味する。
+
+| A | B |A and B|A or B|not A|
+|:-:|:-:|:-----:|:----:|:---:|
+| T | T |   T   |   T  |  F  |
+| T | F |   F   |   T  |  F  |
+| T | U |   U   |   T  |  F  |
+| F | T |   F   |   T  |  T  |
+| F | F |   F   |   F  |  T  |
+| F | U |   F   |   U  |  T  |
+| U | T |   U   |   T  |  U  |
+| U | F |   F   |   U  |  U  |
+| U | U |   U   |   U  |  U  |
+
+
+### 問
+3値論理のデータ型`Ternary`を以下のように定義する。
+```haskell
+data Ternary = T | F | U deriving (Show)
+```
+`T`は*真*を、`F`は*偽*を、`U`は*未定義*をそれぞれ意味する値である。 
+このとき、以下の関数群を定義せよ。
+
+  1. `tnot` : `Ternary`値を受け取り、その論理否定となる`Ternary`値を返す関数
+  2. `tand` : `Ternary`値を2つ受け取り、それらの論理積となる`Ternary`値を返す関数
+  2. `tor` : `Ternary`値を2つ受け取り、それらの論理和となる`Ternary`値を返す関数
+
+### 例
+
+
+## 1.2 スタック
+### スタックの定義
+
+### 問
+`a`型のデータを格納するスタックのデータ型`Stack`を以下のように定義する。
+```haskell
+data Stack a = Empty | Top a (Stack a) deriving (Show)
+```
+
+
+### 例
+
+
+## 1.3 決定性有限オートマトン
+### 決定性有限オートマトンの定義
+
+### 問
+`Int`型の値を状態集合とし、`a`型の値を文字集合とする決定性有限オートマトンの型`Dfa`を以下のように定義する。
 ```haskell
 import qualified Data.Set as Set
 import qualified Data.Map as Map
 
-
-data Ternary = T | F | I
-data Stack a = Empty | Top a (Stack a)
 data Dfa a = Dfa {
       start :: Int
     , end   :: Set.Set Int
     , delta :: Map.Map (Int, a) Int
-}
+} deriving (Show)
 ```
 
-なお、それぞれの型は以下を意図している。
-- `Ternary` : [3値論理](http://ja.wikipedia.org/wiki/3%E5%80%A4%E8%AB%96%E7%90%86)の型
-- `Stack` : `a`型を格納する[スタック](http://ja.wikipedia.org/wiki/%E3%82%B9%E3%82%BF%E3%83%83%E3%82%AF)の型
-- `DFA` : `a`型を文字とする[決定性有限オートマトン](http://ja.wikipedia.org/wiki/%E6%B1%BA%E5%AE%9A%E6%80%A7%E6%9C%89%E9%99%90%E3%82%AA%E3%83%BC%E3%83%88%E3%83%9E%E3%83%88%E3%83%B3)の型
-
-これらのデータ型を用いた以下の関数群を定義せよ。
+### 例
 
 
 #2. 型クラスの定義と利用
