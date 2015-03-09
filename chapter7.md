@@ -1,5 +1,4 @@
-#1. データ型の定義と利用
-## 1.1 3値論理
+#1. 3値論理
 ### 3値論理の定義
 通常の論理体系では、値は*真*(`True`)と*偽*(`False`)の2値のいずれかであるが、これを3値以上に拡張した論理体系を **多値論理** という。  
 この中でもちょうど3値を用いるものを **3値論理** という。  
@@ -40,12 +39,54 @@ data Ternary = T | F | U deriving (Show)
 
   1. `tnot` : `Ternary`値を受け取り、その論理否定となる`Ternary`値を返す関数
   2. `tand` : `Ternary`値を2つ受け取り、それらの論理積となる`Ternary`値を返す関数
-  2. `tor` : `Ternary`値を2つ受け取り、それらの論理和となる`Ternary`値を返す関数
+  3. `tor` : `Ternary`値を2つ受け取り、それらの論理和となる`Ternary`値を返す関数
+  4. `teq` : `Ternary`値を2つ受け取り、それらが(2値論理として)等しいかを表す`Ternary`値を返す関数
+  5. `tleq` : `Ternary`値を2つ受け取り、(2値論理として)1つめの値が2つめの値以下かを表す`Ternary`値を返す関数
+    ただし、`F`は`T`より小さいものとする
 
 ### 例
+```haskell
+> tnot F
+T
+> tnot U
+U
+> tnot T
+F
 
+> T `tand` T
+T
+> T `tand` F
+F
+> U `tand` T
+U
 
-## 1.2 スタック
+> T `tor` F
+T
+> U `tor` F
+U
+> F `tor` F
+F
+
+> T `teq` T
+T
+> F `teq` T
+F
+> U `teq` F
+U
+> U `teq` U
+U
+
+> T `tleq` F
+F
+> F `tleq` T
+T
+> F `tleq` U
+T
+> U `tleq` U
+U
+```
+
+#2. スタック
 ### スタックの定義
 
 ### 問
@@ -58,7 +99,7 @@ data Stack a = Empty | Top a (Stack a) deriving (Show)
 ### 例
 
 
-## 1.3 決定性有限オートマトン
+#3. 決定性有限オートマトン
 ### 決定性有限オートマトンの定義
 
 ### 問
@@ -77,8 +118,4 @@ data Dfa a = Dfa {
 ### 例
 
 
-#2. 型クラスの定義と利用
-
-#3. ペアノ数
-
-#4. 型無しラムダ計算
+#4. ペアノ数
