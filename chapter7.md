@@ -41,7 +41,7 @@ data Ternary = T | F | U deriving (Show)
   2. `tand` : `Ternary`値を2つ受け取り、それらの論理積となる`Ternary`値を返す関数
   3. `tor` : `Ternary`値を2つ受け取り、それらの論理和となる`Ternary`値を返す関数
   4. `teq` : `Ternary`値を2つ受け取り、それらが(2値論理として)等しいかを表す`Ternary`値を返す関数
-  5. `tleq` : `Ternary`値を2つ受け取り、(2値論理として)1つめの値が2つめの値以下かを表す`Ternary`値を返す関数
+  5. `tleq` : `Ternary`値を2つ受け取り、(2値論理として)1つめの値が2つめの値以下かを表す`Ternary`値を返す関数  
     ただし、`F`は`T`より小さいものとする
 
 ### 例
